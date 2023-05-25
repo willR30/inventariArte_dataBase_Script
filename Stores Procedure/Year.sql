@@ -1,0 +1,44 @@
+--INSERT
+CREATE PROCEDURE CreateYear
+    @name VARCHAR(30)
+AS
+BEGIN
+    INSERT INTO Year (name)
+    VALUES (@name)
+END
+
+
+--SELECT
+CREATE PROCEDURE GetYears
+AS
+BEGIN
+    SELECT * FROM Year
+END
+
+
+--SELECT BY ID
+CREATE PROCEDURE GetYearById
+    @year_id INT
+AS
+BEGIN
+    SELECT * FROM Year WHERE id = @year_id
+END
+
+
+--UPDATE BY ID
+CREATE PROCEDURE GetYearById
+    @year_id INT
+AS
+BEGIN
+    SELECT * FROM Year WHERE id = @year_id
+END
+
+
+--DELETE BY ID
+CREATE PROCEDURE DeleteYear
+    @year_id INT
+AS
+BEGIN
+    DELETE FROM Year WHERE id = @year_id
+END
+
