@@ -10,7 +10,7 @@ use InventariArte
 -----------------------------------------------------------
 -----------------------------------------------------------
 
--- Creación de la tabla Equipment_Category
+-- Creaciï¿½n de la tabla Equipment_Category
 CREATE TABLE Equipment_Category (
     -- Esta tabla es para las CATEGORIAS de el material que se utiliza PARA REPARAR diferentes equipos
     -- Ejemplo:
@@ -19,40 +19,40 @@ CREATE TABLE Equipment_Category (
     --   - Productos quimicos
     --   - etc ...
     id INT PRIMARY KEY IDENTITY,
-    name VARCHAR(30),
-    description VARCHAR(200)
+    name VARCHAR(50),
+    description VARCHAR(100)
 );
 
--- Creación de la tabla Equipment
+-- Creaciï¿½n de la tabla Equipment
 CREATE TABLE Equipment (
-    -- Los equipos para TRABAJAR INTERNAMENTE A FIN DE REPARAR OTROS EQUIPOS que pertenecen a una categoría en específico (que ya fue registrada)
+    -- Los equipos para TRABAJAR INTERNAMENTE A FIN DE REPARAR OTROS EQUIPOS que pertenecen a una categorï¿½a en especï¿½fico (que ya fue registrada)
     -- Ejemplo:
-    --   Categoría: Soldadores
+    --   Categorï¿½a: Soldadores
     --   Producto: Cautin Industrial
     id INT PRIMARY KEY IDENTITY,
-    name VARCHAR(30),
+    name VARCHAR(100),
     id_equipment_category INT,
     FOREIGN KEY (id_equipment_category) REFERENCES Equipment_Category (id)
 );
 
--- Creación de la tabla Category
+-- Creaciï¿½n de la tabla Category
 CREATE TABLE Category (
-    -- Categoría de los productos a vender al público
-    -- Ejemplo: Premium, Seguridad, Teléfono, Computadoras, Impresoras, Solo para empresas, etc...
+    -- Categorï¿½a de los productos a vender al pï¿½blico
+    -- Ejemplo: Premium, Seguridad, Telï¿½fono, Computadoras, Impresoras, Solo para empresas, etc...
     id INT PRIMARY KEY IDENTITY,
     name VARCHAR(30),
     description VARCHAR(200)
 );
 
--- Creación de la tabla Products
+-- Creaciï¿½n de la tabla Products
 CREATE TABLE Products (
-    -- Productos que se venden al público
+    -- Productos que se venden al pï¿½blico
     -- Ejemplo:
-    --   Categoría: Solo empresas
+    --   Categorï¿½a: Solo empresas
     --   Producto: Impresora industrial xl123
     id INT PRIMARY KEY IDENTITY,
-    name VARCHAR(30),
-    description VARCHAR(200),
+    name VARCHAR(200),
+    description VARCHAR(500),
     stock INT,
     cost FLOAT,
     price FLOAT,
@@ -60,7 +60,7 @@ CREATE TABLE Products (
     FOREIGN KEY (id_category) REFERENCES Category (id)
 );
 
--- Creación de la tabla Bill_state
+-- Creaciï¿½n de la tabla Bill_state
 CREATE TABLE Bill_state (
     -- Una factura puede tener un estado
     -- Ejemplo: Activa y/o Anulada
@@ -68,19 +68,19 @@ CREATE TABLE Bill_state (
     name VARCHAR(10)
 );
 
--- Creación de la tabla Month
+-- Creaciï¿½n de la tabla Month
 CREATE TABLE Month (
     id INT PRIMARY KEY IDENTITY,
     name VARCHAR(30)
 );
 
--- Creación de la tabla Year
+-- Creaciï¿½n de la tabla Year
 CREATE TABLE Year (
     id INT PRIMARY KEY IDENTITY,
     name VARCHAR(30)
 );
 
--- Creación de la tabla TypeCustomer
+-- Creaciï¿½n de la tabla TypeCustomer
 CREATE TABLE TypeCustomer (
     -- Se pueden manejar diferentes tipos de clientes
     -- Ejemplo:
@@ -92,24 +92,24 @@ CREATE TABLE TypeCustomer (
     customerType VARCHAR(50)
 );
 
--- Creación de la tabla Customer
+-- Creaciï¿½n de la tabla Customer
 CREATE TABLE Customer (
     -- El cliente como tal que previamente fue registrado
     id INT PRIMARY KEY IDENTITY,
-    full_name VARCHAR(10),
+    full_name VARCHAR(200),
     type INT,
     FOREIGN KEY (type) REFERENCES TypeCustomer (id)
 );
 
--- Creación de la tabla CurrencyType
+-- Creaciï¿½n de la tabla CurrencyType
 CREATE TABLE CurrencyType (
-    -- Ej: C$-Córdobas, $-Dólar, etc...
+    -- Ej: C$-Cï¿½rdobas, $-Dï¿½lar, etc...
     id INT PRIMARY KEY IDENTITY,
     currency VARCHAR(20),
     symbol VARCHAR(5)
 );
 
--- Creación de la tabla PaymentType
+-- Creaciï¿½n de la tabla PaymentType
 CREATE TABLE PaymentType (
     -- Tipos de pago:
     --   - Efectivo
@@ -118,9 +118,9 @@ CREATE TABLE PaymentType (
     payment_type VARCHAR(20)
 );
 
--- Creación de la tabla Bill
+-- Creaciï¿½n de la tabla Bill
 CREATE TABLE Bill (
-    -- La factura asociadaa un cliente, esta (la factura) tiene un estado, se canceló con un tipo de pago y fue facturada con una moneda en específico
+    -- La factura asociadaa un cliente, esta (la factura) tiene un estado, se cancelï¿½ con un tipo de pago y fue facturada con una moneda en especï¿½fico
 	id INT PRIMARY KEY IDENTITY,
 	date DATE,
 	customer_name INT,
@@ -140,9 +140,9 @@ CREATE TABLE Bill (
 	FOREIGN KEY (id_payment_type) REFERENCES PaymentType (id)
 );
 
--- Creación de la tabla Sale
+-- Creaciï¿½n de la tabla Sale
 CREATE TABLE Sale (
-    -- Cada venta está asociada a una factura y un producto (el que fue vendido)
+    -- Cada venta estï¿½ asociada a una factura y un producto (el que fue vendido)
     id INT PRIMARY KEY IDENTITY,
     id_bill INT,
     id_products INT,
@@ -153,9 +153,9 @@ CREATE TABLE Sale (
     FOREIGN KEY (id_products) REFERENCES Products (id)
 );
 
--- Creación de la tabla User
+-- Creaciï¿½n de la tabla User
 CREATE TABLE [User] (
-    -- Tabla para almacenar la información de los usuarios del sistema
+    -- Tabla para almacenar la informaciï¿½n de los usuarios del sistema
     id INT PRIMARY KEY IDENTITY,
     username NVARCHAR(150),
     password NVARCHAR(128),
@@ -169,16 +169,16 @@ CREATE TABLE [User] (
     date_joined DATETIME
 );
 
--- Creación de la tabla Group
+-- Creaciï¿½n de la tabla Group
 CREATE TABLE [Group] (
     -- Tabla para almacenar los grupos de usuarios
     id INT PRIMARY KEY IDENTITY,
     name NVARCHAR(150)
 );
 
--- Creación de la tabla Membership
+-- Creaciï¿½n de la tabla Membership
 CREATE TABLE Membership (
-    -- Tabla de relación para establecer la pertenencia de los usuarios a los grupos
+    -- Tabla de relaciï¿½n para establecer la pertenencia de los usuarios a los grupos
     user_id INT,
     group_id INT,
     PRIMARY KEY (user_id, group_id),
