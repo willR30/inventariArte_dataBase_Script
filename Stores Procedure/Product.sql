@@ -1,56 +1,67 @@
 --INSERT
-CREATE PROCEDURE CreateProduct
-    @name VARCHAR(30),
-    @description VARCHAR(200),
+CREATE PROCEDURE [dbo].[CreateProduct]
+    @name NVARCHAR(500),
+    @description NVARCHAR(500),
     @stock INT,
     @cost FLOAT,
     @price FLOAT,
-    @category_id INT
+    @currency INT,
+    @category INT
 AS
 BEGIN
-    INSERT INTO Products (name, description, stock, cost, price, id_category)
-    VALUES (@name, @description, @stock, @cost, @price, @category_id)
+    INSERT INTO Products (name, description, stock, cost, price, currency, category)
+    VALUES (@name, @description, @stock, @cost, @price, @currency, @category)
 END
 
 
---SELECT 
-CREATE PROCEDURE GetProducts
+
+--SELECT bY ID 
+CREATE PROCEDURE [dbo].[GetProductById]
+    @id INT
+AS
+BEGIN
+    SELECT * FROM Products WHERE id = @id
+END
+
+--SELECT
+
+CREATE PROCEDURE [dbo].[GetAllProducts]
 AS
 BEGIN
     SELECT * FROM Products
 END
 
 
---SELECT BY ID 
-CREATE PROCEDURE GetProductById
-    @product_id INT
-AS
-BEGIN
-    SELECT * FROM Products WHERE id = @product_id
-END
-
 
 --UPDATE BY ID
-CREATE PROCEDURE UpdateProduct
-    @product_id INT,
-    @name VARCHAR(30),
-    @description VARCHAR(200),
+CREATE PROCEDURE [dbo].[UpdateProduct]
+    @id INT,
+    @name NVARCHAR(500),
+    @description NVARCHAR(500),
     @stock INT,
     @cost FLOAT,
     @price FLOAT,
-    @category_id INT
+    @currency INT,
+    @category INT
 AS
 BEGIN
     UPDATE Products
-    SET name = @name, description = @description, stock = @stock, cost = @cost, price = @price, id_category = @category_id
-    WHERE id = @product_id
+    SET name = @name,
+        description = @description,
+        stock = @stock,
+        cost = @cost,
+        price = @price,
+        currency = @currency,
+        category = @category
+    WHERE id = @id
 END
 
 
+
 --DELETE BY ID
-CREATE PROCEDURE DeleteProduct
-    @product_id INT
+CREATE PROCEDURE [dbo].[DeleteProduct]
+    @id INT
 AS
 BEGIN
-    DELETE FROM Products WHERE id = @product_id
+    DELETE FROM Products WHERE id = @id
 END

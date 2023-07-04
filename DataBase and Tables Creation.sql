@@ -10,148 +10,117 @@ use InventariArte
 -----------------------------------------------------------
 -----------------------------------------------------------
 
--- Creaci�n de la tabla Equipment_Category
+-- Create Equipment_Category table
 CREATE TABLE Equipment_Category (
-    -- Esta tabla es para las CATEGORIAS de el material que se utiliza PARA REPARAR diferentes equipos
-    -- Ejemplo:
-    --   - Desarmadores
-    --   - Soldadores
-    --   - Productos quimicos
-    --   - etc ...
     id INT PRIMARY KEY IDENTITY,
-    name VARCHAR(50),
-    description VARCHAR(100)
+    name NVARCHAR(500),
+    description NVARCHAR(500)
 );
 
--- Creaci�n de la tabla Equipment
+-- Create Equipment table
 CREATE TABLE Equipment (
-    -- Los equipos para TRABAJAR INTERNAMENTE A FIN DE REPARAR OTROS EQUIPOS que pertenecen a una categor�a en espec�fico (que ya fue registrada)
-    -- Ejemplo:
-    --   Categor�a: Soldadores
-    --   Producto: Cautin Industrial
     id INT PRIMARY KEY IDENTITY,
-    name VARCHAR(100),
-    id_equipment_category INT,
-    FOREIGN KEY (id_equipment_category) REFERENCES Equipment_Category (id)
+    name NVARCHAR(500),
+    id_equipment_category INT FOREIGN KEY REFERENCES Equipment_Category(id)
 );
 
--- Creaci�n de la tabla Category
+-- Create Category table
 CREATE TABLE Category (
-    -- Categor�a de los productos a vender al p�blico
-    -- Ejemplo: Premium, Seguridad, Tel�fono, Computadoras, Impresoras, Solo para empresas, etc...
     id INT PRIMARY KEY IDENTITY,
-    name VARCHAR(30),
-    description VARCHAR(200)
+    name NVARCHAR(500),
+    description NVARCHAR(500)
 );
 
--- Creaci�n de la tabla Products
-CREATE TABLE Products (
-    -- Productos que se venden al p�blico
-    -- Ejemplo:
-    --   Categor�a: Solo empresas
-    --   Producto: Impresora industrial xl123
+-- Create CurrencyType table
+CREATE TABLE CurrencyType (
     id INT PRIMARY KEY IDENTITY,
-    name VARCHAR(200),
-    description VARCHAR(500),
+    currency NVARCHAR(50)
+);
+
+-- Create Products table
+CREATE TABLE Products (
+    id INT PRIMARY KEY IDENTITY,
+    name NVARCHAR(500),
+    description NVARCHAR(500),
     stock INT,
     cost FLOAT,
     price FLOAT,
-    id_category INT,
-    FOREIGN KEY (id_category) REFERENCES Category (id)
+    currency INT FOREIGN KEY REFERENCES CurrencyType(id),
+    category INT FOREIGN KEY REFERENCES Category(id)
 );
 
--- Creaci�n de la tabla Bill_state
+-- Create Bill_state table
 CREATE TABLE Bill_state (
-    -- Una factura puede tener un estado
-    -- Ejemplo: Activa y/o Anulada
     id INT PRIMARY KEY IDENTITY,
-    name VARCHAR(10)
+    name NVARCHAR(200)
 );
 
--- Creaci�n de la tabla Month
+-- Create Month table
 CREATE TABLE Month (
     id INT PRIMARY KEY IDENTITY,
-    name VARCHAR(30)
+    name NVARCHAR(100)
 );
 
--- Creaci�n de la tabla Year
+-- Create Year table
 CREATE TABLE Year (
     id INT PRIMARY KEY IDENTITY,
-    name VARCHAR(30)
+    name NVARCHAR(100)
 );
 
--- Creaci�n de la tabla TypeCustomer
+-- Create TypeCustomer table
 CREATE TABLE TypeCustomer (
-    -- Se pueden manejar diferentes tipos de clientes
-    -- Ejemplo:
-    --   - Persona Natural
-    --   - Empresa
-    --   - O.N.G.
-    --   - Etc
     id INT PRIMARY KEY IDENTITY,
-    customerType VARCHAR(50)
+    customerType NVARCHAR(500)
 );
 
--- Creaci�n de la tabla Customer
+-- Create Customer table
 CREATE TABLE Customer (
-    -- El cliente como tal que previamente fue registrado
     id INT PRIMARY KEY IDENTITY,
-    full_name VARCHAR(200),
-    type INT,
-    FOREIGN KEY (type) REFERENCES TypeCustomer (id)
+    full_name NVARCHAR(500),
+    customer_Type INT FOREIGN KEY REFERENCES TypeCustomer(id)
 );
 
--- Creaci�n de la tabla CurrencyType
-CREATE TABLE CurrencyType (
-    -- Ej: C$-C�rdobas, $-D�lar, etc...
-    id INT PRIMARY KEY IDENTITY,
-    currency VARCHAR(20),
-    symbol VARCHAR(5)
-);
-
--- Creaci�n de la tabla PaymentType
+-- Create PaymentType table
 CREATE TABLE PaymentType (
-    -- Tipos de pago:
-    --   - Efectivo
-    --   - Transferencia
     id INT PRIMARY KEY IDENTITY,
-    payment_type VARCHAR(20)
+    payment_type NVARCHAR(100)
 );
 
--- Creaci�n de la tabla Bill
-CREATE TABLE Bill (
-    -- La factura asociadaa un cliente, esta (la factura) tiene un estado, se cancel� con un tipo de pago y fue facturada con una moneda en espec�fico
-	id INT PRIMARY KEY IDENTITY,
-	date DATE,
-	customer_name INT,
-	sub_total FLOAT,
-	iva FLOAT,
-	total FLOAT,
-	id_month INT,
-	id_year INT,
-	id_bill_state INT,
-	id_currency_type INT,
-	id_payment_type INT,
-	FOREIGN KEY (customer_name) REFERENCES Customer (id),
-	FOREIGN KEY (id_month) REFERENCES Month (id),
-	FOREIGN KEY (id_year) REFERENCES Year (id),
-	FOREIGN KEY (id_bill_state) REFERENCES Bill_state (id),
-	FOREIGN KEY (id_currency_type) REFERENCES CurrencyType (id),
-	FOREIGN KEY (id_payment_type) REFERENCES PaymentType (id)
-);
-
--- Creaci�n de la tabla Sale
+-- Create Sale table
 CREATE TABLE Sale (
-    -- Cada venta est� asociada a una factura y un producto (el que fue vendido)
     id INT PRIMARY KEY IDENTITY,
-    id_bill INT,
-    id_products INT,
-    amount_products INT,
-    price_at_moment FLOAT,
-    total_sale FLOAT,
-    FOREIGN KEY (id_bill) REFERENCES Bill (id),
-    FOREIGN KEY (id_products) REFERENCES Products (id)
+    productName INT FOREIGN KEY REFERENCES Products(id),
+    category INT FOREIGN KEY REFERENCES Category(id),
+    price DECIMAL(20, 2),
+    amount_products NVARCHAR(10),
+    total_sale DECIMAL(20, 2)
 );
+
+-- Create Bill table
+CREATE TABLE Bill (
+    id INT PRIMARY KEY IDENTITY,
+    billNumber NVARCHAR(20) UNIQUE,
+    customer_name NVARCHAR(500),
+    customer_type INT FOREIGN KEY REFERENCES TypeCustomer(id),
+    phoneNumber NVARCHAR(9),
+    sub_total DECIMAL(20, 2),
+    iva DECIMAL(20, 2),
+    total DECIMAL(20, 2),
+    currency_type INT FOREIGN KEY REFERENCES CurrencyType(id),
+    payment_type INT FOREIGN KEY REFERENCES PaymentType(id),
+    id_month INT FOREIGN KEY REFERENCES Month(id),
+    id_year INT FOREIGN KEY REFERENCES Year(id),
+    created_at DATE,
+    bill_state INT FOREIGN KEY REFERENCES Bill_state(id)
+);
+
+-- Create BillItems table
+CREATE TABLE BillItems (
+    id INT PRIMARY KEY IDENTITY,
+    billNumber NVARCHAR(20),
+    sale_id INT FOREIGN KEY REFERENCES Sale(id)
+);
+
 
 -- Creaci�n de la tabla User
 CREATE TABLE [User] (

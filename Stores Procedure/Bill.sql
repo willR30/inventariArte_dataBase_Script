@@ -1,28 +1,40 @@
 --INSERT
-CREATE PROCEDURE CreateBill
-    @date DATE,
-    @customer_name INT,
-    @sub_total FLOAT,
-    @iva FLOAT,
-    @total FLOAT,
+CREATE PROCEDURE [dbo].[CreateBill]
+    @billNumber NVARCHAR(20),
+    @customer_name NVARCHAR(500),
+    @customer_type INT,
+    @phoneNumber NVARCHAR(9),
+    @sub_total DECIMAL(20, 2),
+    @iva DECIMAL(20, 2),
+    @total DECIMAL(20, 2),
+    @currency_type INT,
+    @payment_type INT,
     @id_month INT,
     @id_year INT,
-    @id_bill_state INT,
-    @id_currency_type INT,
-    @id_payment_type INT
+    @created_at DATE,
+    @bill_state INT
 AS
 BEGIN
-    INSERT INTO Bill (date, customer_name, sub_total, iva, total, id_month, id_year, id_bill_state, id_currency_type, id_payment_type)
-    VALUES (@date, @customer_name, @sub_total, @iva, @total, @id_month, @id_year, @id_bill_state, @id_currency_type, @id_payment_type)
+    INSERT INTO Bill (billNumber, customer_name, customer_type, phoneNumber, sub_total, iva, total, currency_type, payment_type, id_month, id_year, created_at, bill_state)
+    VALUES (@billNumber, @customer_name, @customer_type, @phoneNumber, @sub_total, @iva, @total, @currency_type, @payment_type, @id_month, @id_year, @created_at, @bill_state)
 END
 
 
+
 --SELECT
-CREATE PROCEDURE GetBills
+CREATE PROCEDURE [dbo].[GetBillById]
+    @id INT
+AS
+BEGIN
+    SELECT * FROM Bill WHERE id = @id
+END
+
+CREATE PROCEDURE [dbo].[GetAllBills]
 AS
 BEGIN
     SELECT * FROM Bill
 END
+
 
 
 --SELECT BY ID
@@ -35,39 +47,46 @@ END
 
 
 --UPDATE BY ID
-CREATE PROCEDURE UpdateBill
-    @bill_id INT,
-    @date DATE,
-    @customer_name INT,
-    @sub_total FLOAT,
-    @iva FLOAT,
-    @total FLOAT,
+CREATE PROCEDURE [dbo].[UpdateBill]
+    @id INT,
+    @billNumber NVARCHAR(20),
+    @customer_name NVARCHAR(500),
+    @customer_type INT,
+    @phoneNumber NVARCHAR(9),
+    @sub_total DECIMAL(20, 2),
+    @iva DECIMAL(20, 2),
+    @total DECIMAL(20, 2),
+    @currency_type INT,
+    @payment_type INT,
     @id_month INT,
     @id_year INT,
-    @id_bill_state INT,
-    @id_currency_type INT,
-    @id_payment_type INT
+    @created_at DATE,
+    @bill_state INT
 AS
 BEGIN
     UPDATE Bill
-    SET date = @date,
+    SET billNumber = @billNumber,
         customer_name = @customer_name,
+        customer_type = @customer_type,
+        phoneNumber = @phoneNumber,
         sub_total = @sub_total,
         iva = @iva,
         total = @total,
+        currency_type = @currency_type,
+        payment_type = @payment_type,
         id_month = @id_month,
         id_year = @id_year,
-        id_bill_state = @id_bill_state,
-        id_currency_type = @id_currency_type,
-        id_payment_type = @id_payment_type
-    WHERE id = @bill_id
+        created_at = @created_at,
+        bill_state = @bill_state
+    WHERE id = @id
 END
 
 
+
 --DELETE BY ID
-CREATE PROCEDURE DeleteBill
-    @bill_id INT
+CREATE PROCEDURE [dbo].[DeleteBill]
+    @id INT
 AS
 BEGIN
-    DELETE FROM Bill WHERE id = @bill_id
+    DELETE FROM Bill WHERE id = @id
 END
